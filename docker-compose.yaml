@@ -1,0 +1,16 @@
+---
+version: '3.8'
+
+services:
+  runner:
+    image: github-runner-linux:latest
+    build:
+      context: .
+      args:
+        RUNNER_VERSION: '2.311.0'
+        RUNNER_OS: 'linux'
+        RUNNER_ARCH: 'arm64'
+    environment:
+      GH_TOKEN: ${GH_TOKEN}
+      GH_OWNER: ${GH_OWNER}
+      GH_REPOSITORY: ${GH_REPOSITORY}

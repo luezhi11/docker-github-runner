@@ -1,16 +1,14 @@
----
-version: '3.8'
-
 services:
   runner:
-    image: github-runner-linux:latest
+    image: luezhi11/github-runner:ubuntu20.04.2.320.0
+    container_name: github-runner
+    restart: always
     build:
       context: .
-      args:
-        RUNNER_VERSION: '2.311.0'
-        RUNNER_OS: 'linux'
-        RUNNER_ARCH: 'arm64'
     environment:
       GH_TOKEN: ${GH_TOKEN}
       GH_OWNER: ${GH_OWNER}
       GH_REPOSITORY: ${GH_REPOSITORY}
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    privileged: true

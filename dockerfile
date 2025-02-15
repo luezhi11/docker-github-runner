@@ -1,20 +1,20 @@
 FROM ubuntu:20.04
 
-ARG RUNNER_VERSION="2.320.0"
+ARG RUNNER_VERSION="2.322.0"
 
 # Prevents installdependencies.sh from prompting the user and blocking the image creation
 ARG DEBIAN_FRONTEND=noninteractive
 
+RUN sed -i 's/ports.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
 
 RUN apt update -y && apt upgrade -y && useradd -m docker
 RUN apt install -y --no-install-recommends \
   curl jq build-essential libssl-dev libffi-dev python3 python3-venv python3-dev python3-pip docker-buildx \
   && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
-
-RUN cd /home/docker && mkdir actions-runner && cd actions-runner \
-  && curl -O -L https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz \
-  && tar xzf ./actions-runner-linux-x64-${RUNNER_VERSION}.tar.gz
+RUN if [ "$(uname -m)" = "aarch64" ];then ARCH="arm64";fi && cd /home/docker && mkdir actions-runner && cd actions-runner \
+  && curl -O -L https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz \
+  && tar xzf ./actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz
 
 RUN chown -R docker ~docker && /home/docker/actions-runner/bin/installdependencies.sh
 

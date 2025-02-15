@@ -12,7 +12,15 @@ RUN apt install -y --no-install-recommends \
   curl jq build-essential libssl-dev libffi-dev python3 python3-venv python3-dev python3-pip docker-buildx \
   && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
-RUN if [ "$(uname -m)" = "aarch64" ];then ARCH="arm64";fi && cd /home/docker && mkdir actions-runner && cd actions-runner \
+ARG TARGETARCH
+RUN if [ "$TARGETARCH" = "amd64" ]; then \
+  ARCH="x64"; \
+  elif [ "$TARGETARCH" = "arm64" ]; then \
+  ARCH="arm64"; \
+  else \
+  echo "Unsupported architecture: $TARGETARCH" && exit 1; \
+  fi  && \
+  cd /home/docker && mkdir actions-runner && cd actions-runner \
   && curl -O -L https://github.com/actions/runner/releases/download/v${RUNNER_VERSION}/actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz \
   && tar xzf ./actions-runner-linux-${ARCH}-${RUNNER_VERSION}.tar.gz
 

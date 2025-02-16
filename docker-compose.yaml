@@ -1,7 +1,6 @@
 services:
   runner:
-    image: images.luezhi12.tech/github-runner:ubuntu20.04.2.322.0
-    container_name: github-runner
+    image: images.luezhi12.tech/github-runner:ubuntu20.04-linux-2.322.0
     restart: always
     environment:
       GH_TOKEN: ${GH_TOKEN}

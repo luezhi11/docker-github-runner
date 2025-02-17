@@ -1,0 +1,18 @@
+services:
+  runner:
+    image: images.luezhi12.tech/github-runner:ubuntu20.04-linux-2.322.0
+    restart: always
+    environment:
+      GH_TOKEN: ${GH_TOKEN}
+      GH_ORG: ${GH_ORG}
+      DOCKER_HOST: tcp://socat:2375
+    links:
+      - socat
+
+  socat:
+    image: alpine/socat
+    command: TCP4-LISTEN:2375,fork,reuseaddr UNIX-CONNECT:/var/run/docker.sock
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    expose:
+      - "2375"

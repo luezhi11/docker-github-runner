@@ -1,4 +1,4 @@
-
+.PHONY: setup
 UNAME := $(shell uname)
 ifeq ($(UNAME),Darwin)
 	OS := "macos"

@@ -8,3 +8,6 @@ endif
 
 setup:
 	@docker compose -f docker-compose-$(OS).yaml up -d
+
+clean:
+	@docker compose -f docker-compose-$(OS).yaml down

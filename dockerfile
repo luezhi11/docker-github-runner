@@ -6,10 +6,12 @@ ARG RUNNER_VERSION="2.322.0"
 ARG DEBIAN_FRONTEND=noninteractive
 
 RUN sed -i 's/ports.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
+RUN sed -i 's/archive.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
+RUN sed -i 's/security.ubuntu.com/mirrors.aliyun.com/g' /etc/apt/sources.list
 
 RUN apt update -y && apt upgrade -y && useradd -m docker
 RUN apt install -y --no-install-recommends \
-  curl jq build-essential libssl-dev libffi-dev python3 python3-venv python3-dev python3-pip docker-buildx \
+  curl jq build-essential libssl-dev libffi-dev python3 python3-venv python3-dev python3-pip docker-buildx openssh-client \
   && rm -rf /var/lib/{apt,dpkg,cache,log}/
 
 ARG TARGETARCH
